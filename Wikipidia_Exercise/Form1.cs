@@ -17,13 +17,17 @@ namespace Wikipidia_Exercise
     {
         SpeechSynthesizer speaker = new SpeechSynthesizer();
         string language = "el";
+        FavSearch selectedSearch;
         public Form1()
         {
             InitializeComponent();
+            
             this.AutoScaleMode = AutoScaleMode.None;
             this.ClientSize = new Size(964, 617);
             this.MinimumSize = this.Size;
             this.MaximumSize = this.Size;
+            dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
 
             textBox3.ScrollBars = ScrollBars.Vertical;
             /*
@@ -206,6 +210,8 @@ namespace Wikipidia_Exercise
             label2.Visible = !Home;
             button2.Visible = !Home;
             button3.Visible = !Home;
+            dataGridView1.Visible = false;
+            button4.Visible = false;
         }
 
         private void label3_MouseEnter(object sender, EventArgs e)
@@ -347,6 +353,43 @@ namespace Wikipidia_Exercise
                 dataGridView1.DataSource = data;
             }
         }
+        private async void dataGridView1_CellDoubleClick( object sender, DataGridViewCellEventArgs e)
+        {
+           
+            if (e.RowIndex < 0)
+                return;
+
+            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+            FavSearch selectedSearch1 = new FavSearch
+            {
+                Name = row.Cells["Name"].Value.ToString(),
+                Language = row.Cells["Language"].Value.ToString()
+            };
+           
+
+            
+             language = selectedSearch1.Language;
+
+
+
+            UIManaging(false);
+            await LoadWikiData(selectedSearch1.Name);
+        }
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count == 0)
+                return;
+            button4.Visible = true;
+            DataGridViewRow row = dataGridView1.SelectedRows[0];
+            selectedSearch = new FavSearch
+            {
+                Name = row.Cells["Name"].Value.ToString(),
+                Language = row.Cells["Language"].Value.ToString()
+            };  
+          
+            
+        }
+
 
 
         private async void button3_Click(object sender, EventArgs e)
@@ -381,16 +424,59 @@ namespace Wikipidia_Exercise
             button2.Visible = false;
             button3.Visible = false;
             dataGridView1.Visible = true;
+            selectedSearch = null;
             await LoadFavouritesAsync();
         }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        public static async Task<bool> DeleteFavourite(FavSearch Delsearch)
         {
+            try
+            {
+                Supabase supabase = new Supabase();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("apikey", supabase.ApiKey.Trim());
+                    client.DefaultRequestHeaders.Add(
+                        "Authorization",
+                        $"Bearer {supabase.ApiKey.Trim()}"
+                    );
+
+                    string url =
+                        $"{supabase.SupabaseUrl}/rest/v1/Searches" +
+                        $"?Name=eq.{Uri.EscapeDataString(Delsearch.Name)}" +
+                        $"&Language=eq.{Uri.EscapeDataString(Delsearch.Language)}";
+
+                    HttpResponseMessage response =
+                        await client.DeleteAsync(url);
+
+                    return response.IsSuccessStatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Supabase delete error");
+                return false;
+            }
+        }
+
+        private async void button4_Click(object sender, EventArgs e)
+        {
+            if (selectedSearch != null)
+            {
+                await DeleteFavourite(selectedSearch);
+            }
+            else
+            {
+                MessageBox.Show("No search selected.");
+                return;
+            }
+           await LoadFavouritesAsync();
 
         }
     }
     
     }
+
 
 
     public class WikiSummary
