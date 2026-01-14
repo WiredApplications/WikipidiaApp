@@ -1,4 +1,4 @@
-# WikiForms – Desktop Wikipedia Browser & Search Manager
+# WikiApp – Desktop Wikipedia Browser & Search Manager
 
 A Windows Forms desktop application that allows users to search Wikipedia articles, view summaries and images, listen to content using speech synthesis, and manage a persistent list of favourite searches.
 
