@@ -76,10 +76,9 @@ Before opening the project, ensure you have the following installed:
 - Article title and summary display
 - Article image preview (when available)
 - Text-to-speech reading functionality
-- Favourite searches with save and delete options
 - Interactive and responsive Windows Forms interface
 - Asynchronous API requests for smooth UI performance
-- Dynamic handling of missing images with a placeholder
+- Supabase Database
 
 ---
 
@@ -116,7 +115,7 @@ Users can save searches for later access:
   - Language
 - Users can double-click a row to reload the saved article.
 - Selected searches can be deleted.
-- Data persists between sessions using a cloud or local database (Supabase or SQLite).
+- Data persists between sessions using a cloud or local database (Supabase).
 
 ---
 
