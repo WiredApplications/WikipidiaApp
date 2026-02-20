@@ -383,8 +383,8 @@ namespace Wikipidia_Exercise
 
     public class Supabase
     {
-        public readonly string SupabaseUrl = "https://hbxldnvyfaczymionfty.supabase.co";
-        public readonly string ApiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhieGxkbnZ5ZmFjenltaW9uZnR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgxMjIwNzMsImV4cCI6MjA4MzY5ODA3M30.KwQfSKrStOY-AiAgrjkDnYnzjHqd8OPLWBhmBQEvRjc";
+        public readonly string SupabaseUrl = "https://ogzbkjsppoynmbwiehvk.supabase.co";
+        public readonly string ApiKey = "sb_publishable_WURijhOqXnJlcHRrd41Qrg_0wDZvhI5";
     }
 
     public class FavSearch
